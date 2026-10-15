@@ -10,6 +10,8 @@ export interface VehicleMaster {
   location: string
   employee: string
   vehicle_value: number
+  vehicle_owner?: string
+  vehicle_status?: string
   image?: string
 }
 
@@ -197,6 +199,8 @@ export const vmsApi = {
       "location",
       "employee",
       "vehicle_value",
+      "vehicle_owner",
+      "vehicle_status",
       "image",
     ], filters),
 

@@ -13,6 +13,8 @@ interface VehicleAdditionalSectionProps {
   handleSelectChange: (field: string, value: string) => void
   fuelTypeOptions: any[]
   uomOptions: any[]
+  vehicleOwnerOptions: any[]
+  vehicleStatusOptions: any[]
 }
 
 const VehicleAdditionalSection: React.FC<VehicleAdditionalSectionProps> = ({
@@ -21,6 +23,8 @@ const VehicleAdditionalSection: React.FC<VehicleAdditionalSectionProps> = ({
   handleSelectChange,
   fuelTypeOptions,
   uomOptions,
+  vehicleOwnerOptions,
+  vehicleStatusOptions,
 }) => {
   return (
     <FormSection title="Additional Details" icon={Fuel}>
@@ -55,6 +59,26 @@ const VehicleAdditionalSection: React.FC<VehicleAdditionalSectionProps> = ({
           }}
         />
         </div>
+      </InputGroup>
+
+      <InputGroup label="Vehicle Owner *" required>
+        <ReusableCombobox
+          options={vehicleOwnerOptions}
+          value={formData.vehicleOwner}
+          onValueChange={(v: string) => handleSelectChange("vehicleOwner", v)}
+          placeholder="Select Owner"
+          isLoading={false}
+        />
+      </InputGroup>
+
+      <InputGroup label="Vehicle Status">
+        <ReusableCombobox
+          options={vehicleStatusOptions}
+          value={formData.vehicleStatus}
+          onValueChange={(v: string) => handleSelectChange("vehicleStatus", v)}
+          placeholder="Select Status"
+          isLoading={false}
+        />
       </InputGroup>
 
       <InputGroup label="Color">

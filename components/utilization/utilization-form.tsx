@@ -304,12 +304,16 @@ export function UtilizationReportModal({ isOpen, onClose, record }: UtilizationF
       try {
         const vehicles = await fetchFrappeDoctype(
           VEHICLE_DOCTYPE,
-          ["name"],
+          ["name", "vehicle_status"],
           [["warehouse", "=", formData.warehouse]]
         ) as FrappeDoc[];
 
-        console.log("Fetched vehicles for", formData.warehouse, vehicles);
-        setVehicleOptions(vehicles);
+        const activeVehicles = vehicles.filter(
+          (v) => (v as any).vehicle_status === "Active" || (!(v as any).vehicle_status && (v as any).vehicle_status !== "Scrap" && (v as any).vehicle_status !== "Sold")
+        );
+
+        console.log("Fetched active vehicles for", formData.warehouse, activeVehicles);
+        setVehicleOptions(activeVehicles);
       } catch (e) {
         console.error("Vehicle fetch error:", e);
       } finally {

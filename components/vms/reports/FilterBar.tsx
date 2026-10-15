@@ -26,7 +26,10 @@ export function FilterBar({ onReset }: FilterBarProps) {
     const fetchOptions = async () => {
       try {
         const vehiclesData = await vmsApi.getVehicleMasters()
-        setVehicles(vehiclesData)
+        const activeVehicles = vehiclesData.filter(
+          (v) => v.vehicle_status === "Active" || (!v.vehicle_status && v.vehicle_status !== "Scrap" && v.vehicle_status !== "Sold")
+        )
+        setVehicles(activeVehicles)
 
         // Get unique cost centers from utilization reports
         const utilizations = await vmsApi.getUtilizationReports()

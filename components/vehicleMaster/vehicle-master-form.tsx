@@ -75,6 +75,8 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
     fuelType: "Petrol",
     fuelUOM: "Litre",
     carbonCheckDate: "",
+    vehicleOwner: "",
+    vehicleStatus: "Active",
     color: "",
     wheels: "",
     doors: ""
@@ -117,6 +119,17 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
     { name: "Natural Gas" },
     { name: "Electric" },
     { name: "CNG" }
+  ]
+
+  const vehicleOwnerOptions = [
+    { name: "Company" },
+    { name: "Hired" }
+  ]
+
+  const vehicleStatusOptions = [
+    { name: "Active" },
+    { name: "Scrap" },
+    { name: "Sold" }
   ]
 
   useEffect(() => {
@@ -166,9 +179,36 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
           fuelType: doc.fuel_type || "Petrol",
           fuelUOM: doc.fuel_uom || "Litre",
           carbonCheckDate: doc.carbon_check_date || "",
+          vehicleOwner: doc.vehicle_owner || "",
+          vehicleStatus: doc.vehicle_status || "Active",
           color: doc.color || "",
           wheels: doc.wheels || "",
           doors: doc.doors || ""
+        })
+      } else {
+        setFormData({
+          licensePlate: "",
+          make: "",
+          model: "",
+          image: "",
+          lastOdometer: "",
+          acquisitionDate: "",
+          warehouse: "",
+          chassisNo: "",
+          vehicleValue: "",
+          employee: "",
+          insuranceCompany: "",
+          policyNo: "",
+          startDate: "",
+          endDate: "",
+          fuelType: "Petrol",
+          fuelUOM: "Litre",
+          carbonCheckDate: "",
+          vehicleOwner: "",
+          vehicleStatus: "Active",
+          color: "",
+          wheels: "",
+          doors: ""
         })
       }
     }
@@ -237,6 +277,9 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
     if (!formData.licensePlate)
       return showAlert("Error", "License Plate is required")
 
+    if (!formData.vehicleOwner)
+      return showAlert("Error", "Vehicle Owner is required")
+
     setIsSubmitting(true)
     const existingVehicles = await fetchFrappeDoctype(
       DOCTYPE_NAME,
@@ -278,6 +321,8 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
         fuel_type: formData.fuelType,
         fuel_uom: formData.fuelUOM,
         carbon_check_date: formData.carbonCheckDate,
+        vehicle_owner: formData.vehicleOwner,
+        vehicle_status: formData.vehicleStatus || "Active",
         color: formData.color,
         wheels: formData.wheels,
         doors: formData.doors,
@@ -316,6 +361,9 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
   }
 
   const handleUpdate = async () => {
+    if (!formData.vehicleOwner)
+      return showAlert("Error", "Vehicle Owner is required")
+
     setIsSubmitting(true)
 
     try {
@@ -348,6 +396,8 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
         fuel_type: formData.fuelType,
         fuel_uom: formData.fuelUOM,
         carbon_check_date: formData.carbonCheckDate,
+        vehicle_owner: formData.vehicleOwner,
+        vehicle_status: formData.vehicleStatus || "Active",
         color: formData.color,
         wheels: formData.wheels,
         doors: formData.doors
@@ -444,7 +494,8 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
             handleSelectChange={handleSelectChange}
             fuelTypeOptions={fuelTypeOptions}
             uomOptions={uomOptions}
-
+            vehicleOwnerOptions={vehicleOwnerOptions}
+            vehicleStatusOptions={vehicleStatusOptions}
           />
         </div>
 

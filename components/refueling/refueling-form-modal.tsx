@@ -411,12 +411,16 @@ export function RefuelingFormModal({ isOpen, onClose, record, onSuccess }: Modal
       try {
         const vehicles = await fetchFrappeDoctype(
           VEHICLE_DOCTYPE,
-          ["name"],
+          ["name", "vehicle_status"],
           [["warehouse", "=", formData.sourceWarehouse]]
-        ) as VehicleDoc[];
+        ) as (VehicleDoc & { vehicle_status?: string })[];
 
-        console.log("Fetched vehicles for", formData.sourceWarehouse, vehicles);
-        setVehicleOptions(vehicles);
+        const activeVehicles = vehicles.filter(
+          (v) => v.vehicle_status === "Active" || (!v.vehicle_status && v.vehicle_status !== "Scrap" && v.vehicle_status !== "Sold")
+        );
+
+        console.log("Fetched active vehicles for", formData.sourceWarehouse, activeVehicles);
+        setVehicleOptions(activeVehicles);
       } catch (e) {
         console.error("Vehicle fetch error:", e);
       } finally {

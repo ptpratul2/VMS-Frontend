@@ -107,14 +107,18 @@ export function TransferVehicleModal({ isOpen, onClose }: TransferModalProps) {
 
     const loadData = async () => {
       const [vehicles, warehouses, employees] = await Promise.all([
-        fetchFrappeDoctype("Vehicle Master", ["name", "license_plate", "warehouse"]),
+        fetchFrappeDoctype("Vehicle Master", ["name", "license_plate", "warehouse", "vehicle_status"]),
         fetchFrappeDoctype("Warehouse", ["name"], [["is_group", "=", 0]]),
         fetchFrappeDoctype("Employee", ["name", "employee_name"]),
       ])
 
       if (cancel) return
 
-      const vehiclesWithLabel = vehicles.map((v) => ({
+      const activeVehicles = vehicles.filter(
+        (v) => (v as any).vehicle_status === "Active" || (!(v as any).vehicle_status && (v as any).vehicle_status !== "Scrap" && (v as any).vehicle_status !== "Sold")
+      );
+
+      const vehiclesWithLabel = activeVehicles.map((v) => ({
         ...v,
         display_label: v.license_plate ? `${v.license_plate} (${v.name})` : v.name
       }));

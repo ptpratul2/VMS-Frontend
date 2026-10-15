@@ -46,6 +46,8 @@ export interface VehicleRecord {
   image: string | null
   last_odometer: number
   warehouse: string
+  vehicle_owner?: string
+  vehicle_status?: string
   employee: string
   chassis_no: number
   acquisition_date: string
@@ -141,7 +143,9 @@ export default function VehicleMasterTable({ onAddVehicle, onSelectVehicle }: Ve
     r.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
     r.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (r.warehouse && r.warehouse.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    (r.employee && r.employee.toLowerCase().includes(searchTerm.toLowerCase()))
+    (r.employee && r.employee.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (r.vehicle_owner && r.vehicle_owner.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (r.vehicle_status && r.vehicle_status.toLowerCase().includes(searchTerm.toLowerCase()))
   )
 
   const ITEMS_PER_PAGE = 50
@@ -269,6 +273,8 @@ export default function VehicleMasterTable({ onAddVehicle, onSelectVehicle }: Ve
         // "Image URL": record.image || "",
         "Last Odometer": record.last_odometer || 0,
         "Warehouse": record.warehouse || "",
+        "Vehicle Owner": record.vehicle_owner || "",
+        "Vehicle Status": record.vehicle_status || "",
         "Employee": record.employee || "",
         "Chassis No": record.chassis_no || "",
         "Acquisition Date": record.acquisition_date || "",
@@ -315,7 +321,7 @@ export default function VehicleMasterTable({ onAddVehicle, onSelectVehicle }: Ve
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Search by warehouse, License Plate..."
+            placeholder="Search by warehouse, License Plate, Owner..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10 glass-card"
@@ -368,6 +374,8 @@ export default function VehicleMasterTable({ onAddVehicle, onSelectVehicle }: Ve
                 <TableHead className="text-primary font-semibold">License Plate</TableHead>
                 {/* <TableHead className="text-primary font-semibold">Make & Model</TableHead> */}
                 <TableHead className="text-primary font-semibold">Warehouse</TableHead>
+                <TableHead className="text-primary font-semibold">Vehicle Owner</TableHead>
+                <TableHead className="text-primary font-semibold">Status</TableHead>
                 <TableHead className="text-primary font-semibold">Created On</TableHead>
                 <TableHead className="text-primary font-semibold">Employee</TableHead>
                 <TableHead className="text-primary font-semibold">Fuel Type</TableHead>
@@ -379,7 +387,7 @@ export default function VehicleMasterTable({ onAddVehicle, onSelectVehicle }: Ve
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <TableRow key={i}>
-                    <TableCell colSpan={8} className="h-16">
+                    <TableCell colSpan={10} className="h-16">
                       <div className="flex items-center justify-center">
                         <Loader2 className="h-4 w-4 animate-spin text-muted-foreground/50" />
                       </div>
@@ -429,6 +437,24 @@ export default function VehicleMasterTable({ onAddVehicle, onSelectVehicle }: Ve
                     <TableCell className="font-medium">{record.license_plate}</TableCell>
                     {/* <TableCell>{record.make} {record.model}</TableCell> */}
                     <TableCell>{record.warehouse}</TableCell>
+                    <TableCell>{record.vehicle_owner || "-"}</TableCell>
+                    <TableCell>
+                      {record.vehicle_status ? (
+                        <span
+                          className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${
+                            record.vehicle_status === "Active"
+                              ? "bg-emerald-500/15 text-emerald-600 border border-emerald-500/30"
+                              : record.vehicle_status === "Scrap"
+                              ? "bg-red-500/15 text-red-600 border border-red-500/30"
+                              : "bg-amber-500/15 text-amber-600 border border-amber-500/30"
+                          }`}
+                        >
+                          {record.vehicle_status}
+                        </span>
+                      ) : (
+                        "-"
+                      )}
+                    </TableCell>
                     <TableCell className="font-mono">
                                         {record.creation ? new Date(record.creation).toLocaleString('en-GB', {
                                           day: '2-digit',
@@ -445,7 +471,7 @@ export default function VehicleMasterTable({ onAddVehicle, onSelectVehicle }: Ve
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={8} className="text-center py-12 text-muted-foreground">
+                  <TableCell colSpan={10} className="text-center py-12 text-muted-foreground">
                     No vehicles found.
                   </TableCell>
                 </TableRow>

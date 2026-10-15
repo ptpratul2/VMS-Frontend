@@ -1765,11 +1765,15 @@ export function MaintenanceFormModal({
       try {
         const vehicles = await fetchFrappeDoctype(
           VEHICLE_DOCTYPE,
-          ["name", "make", "model", "last_odometer"],
+          ["name", "make", "model", "last_odometer", "vehicle_status"],
           [["warehouse", "=", formData.warehouse]]
-        ) as VehicleDoc[];
+        ) as (VehicleDoc & { vehicle_status?: string })[];
 
-        setVehicleOptions(vehicles);
+        const activeVehicles = vehicles.filter(
+          (v) => v.vehicle_status === "Active" || (!v.vehicle_status && v.vehicle_status !== "Scrap" && v.vehicle_status !== "Sold")
+        );
+
+        setVehicleOptions(activeVehicles);
       } catch (e) {
         console.error("Vehicle fetch error:", e);
       } finally {

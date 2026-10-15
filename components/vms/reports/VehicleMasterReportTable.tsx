@@ -44,6 +44,7 @@ export function VehicleMasterReportTable({ data, isLoading }: VehicleMasterRepor
         "License Plate",
         "Make",
         "Model",
+        "Status",
         "Fuel Type",
         "Odometer",
         "Location",
@@ -55,6 +56,7 @@ export function VehicleMasterReportTable({ data, isLoading }: VehicleMasterRepor
           vehicle.license_plate || "",
           vehicle.make || "",
           vehicle.model || "",
+          vehicle.vehicle_status || "Active",
           vehicle.fuel_type || "",
           vehicle.last_odometer || 0,
           vehicle.location || "",
@@ -119,6 +121,7 @@ export function VehicleMasterReportTable({ data, isLoading }: VehicleMasterRepor
                 <TableHead>License Plate</TableHead>
                 <TableHead>Make</TableHead>
                 <TableHead>Model</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead>Fuel Type</TableHead>
                 <TableHead>Odometer</TableHead>
                 <TableHead>Location</TableHead>
@@ -129,7 +132,7 @@ export function VehicleMasterReportTable({ data, isLoading }: VehicleMasterRepor
             <TableBody>
               {filteredData.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={9} className="text-center text-muted-foreground">
+                  <TableCell colSpan={10} className="text-center text-muted-foreground">
                     No vehicles found
                   </TableCell>
                 </TableRow>
@@ -154,6 +157,19 @@ export function VehicleMasterReportTable({ data, isLoading }: VehicleMasterRepor
                     <TableCell className="font-medium">{vehicle.license_plate || "N/A"}</TableCell>
                     <TableCell>{vehicle.make || "N/A"}</TableCell>
                     <TableCell>{vehicle.model || "N/A"}</TableCell>
+                    <TableCell>
+                      <span
+                        className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${
+                          vehicle.vehicle_status === "Active"
+                            ? "bg-emerald-500/15 text-emerald-600 border border-emerald-500/30"
+                            : vehicle.vehicle_status === "Scrap"
+                            ? "bg-red-500/15 text-red-600 border border-red-500/30"
+                            : "bg-amber-500/15 text-amber-600 border border-amber-500/30"
+                        }`}
+                      >
+                        {vehicle.vehicle_status || "Active"}
+                      </span>
+                    </TableCell>
                     <TableCell>{vehicle.fuel_type || "N/A"}</TableCell>
                     <TableCell>{vehicle.last_odometer || 0}</TableCell>
                     <TableCell>{vehicle.location || "N/A"}</TableCell>
