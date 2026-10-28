@@ -76,7 +76,7 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
     fuelUOM: "Litre",
     carbonCheckDate: "",
     vehicleOwner: "",
-    vehicleStatus: "Active",
+    vehicleStatus: "",
     color: "",
     wheels: "",
     doors: ""
@@ -180,7 +180,7 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
           fuelUOM: doc.fuel_uom || "Litre",
           carbonCheckDate: doc.carbon_check_date || "",
           vehicleOwner: doc.vehicle_owner || "",
-          vehicleStatus: doc.vehicle_status || "Active",
+          vehicleStatus: doc.vehicle_status || "",
           color: doc.color || "",
           wheels: doc.wheels || "",
           doors: doc.doors || ""
@@ -205,7 +205,7 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
           fuelUOM: "Litre",
           carbonCheckDate: "",
           vehicleOwner: "",
-          vehicleStatus: "Active",
+          vehicleStatus: "",
           color: "",
           wheels: "",
           doors: ""
@@ -322,7 +322,7 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
         fuel_uom: formData.fuelUOM,
         carbon_check_date: formData.carbonCheckDate,
         vehicle_owner: formData.vehicleOwner,
-        vehicle_status: formData.vehicleStatus || "Active",
+        vehicle_status: formData.vehicleStatus,
         color: formData.color,
         wheels: formData.wheels,
         doors: formData.doors,
@@ -397,7 +397,7 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
         fuel_uom: formData.fuelUOM,
         carbon_check_date: formData.carbonCheckDate,
         vehicle_owner: formData.vehicleOwner,
-        vehicle_status: formData.vehicleStatus || "Active",
+        vehicle_status: formData.vehicleStatus,
         color: formData.color,
         wheels: formData.wheels,
         doors: formData.doors
