@@ -71,7 +71,7 @@ const VehicleAdditionalSection: React.FC<VehicleAdditionalSectionProps> = ({
         />
       </InputGroup>
 
-      <InputGroup label="Vehicle Status">
+      <InputGroup label="Vehicle Status *">
         <ReusableCombobox
           options={vehicleStatusOptions}
           value={formData.vehicleStatus}
