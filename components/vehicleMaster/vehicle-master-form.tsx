@@ -280,6 +280,9 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
     if (!formData.vehicleOwner)
       return showAlert("Error", "Vehicle Owner is required")
 
+    if (!formData.vehicleStatus)
+      return showAlert("Error", "Vehicle Status is required")
+
     setIsSubmitting(true)
     const existingVehicles = await fetchFrappeDoctype(
       DOCTYPE_NAME,
@@ -363,6 +366,9 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
   const handleUpdate = async () => {
     if (!formData.vehicleOwner)
       return showAlert("Error", "Vehicle Owner is required")
+
+    if (!formData.vehicleStatus)
+      return showAlert("Error", "Vehicle Status is required")
 
     setIsSubmitting(true)
 
