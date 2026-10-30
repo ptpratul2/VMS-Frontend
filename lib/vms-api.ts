@@ -8,6 +8,7 @@ export interface VehicleMaster {
   last_odometer: number
   fuel_type: string
   location: string
+  custom_engine_no?: string
   employee: string
   vehicle_value: number
   vehicle_owner?: string

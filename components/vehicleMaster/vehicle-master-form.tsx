@@ -66,14 +66,16 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
     acquisitionDate: "",
     warehouse: "",
     chassisNo: "",
+    custom_engine_no: "",
+    location: "",
     vehicleValue: "",
     employee: "",
     insuranceCompany: "",
     policyNo: "",
     startDate: "",
     endDate: "",
-    fuelType: "Petrol",
-    fuelUOM: "Litre",
+    fuelType: "",
+    fuelUOM: "",
     carbonCheckDate: "",
     vehicleOwner: "",
     vehicleStatus: "",
@@ -121,6 +123,14 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
     { name: "CNG" }
   ]
 
+  const FUEL_TYPE_TO_UOM: Record<string, string> = {
+    Petrol: "Litre",
+    Diesel: "Litre",
+    "Natural Gas": "Kg",
+    Electric: "Ah",
+    CNG: "Kg"
+  }
+
   const vehicleOwnerOptions = [
     { name: "Company" },
     { name: "Hired" }
@@ -148,7 +158,21 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
         combined_label: `${emp.name} - ${emp.employee_name}`
       }));
 
-      const uoms = uom.filter((item, index) => (item.name === "Litre"))
+      const defaultFuelUoms = [
+        { name: "Litre" },
+        { name: "Kg" },
+        { name: "Kg" },
+        { name: "Ah" }
+      ];
+
+      const uomMap = new Map<string, FrappeDoc>();
+      defaultFuelUoms.forEach((item) => uomMap.set(item.name, item));
+      uom.forEach((item: FrappeDoc) => {
+        if (item?.name && !uomMap.has(item.name)) {
+          uomMap.set(item.name, item);
+        }
+      });
+      const uoms = Array.from(uomMap.values());
       if (cancel) return
       setEmployeeOptions(empsWithCombinedLabel);
       setUomOptions(uoms)
@@ -170,14 +194,16 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
           acquisitionDate: doc.acquisition_date || "",
           warehouse: doc.warehouse || "",
           chassisNo: doc.chassis_no || "",
+          custom_engine_no: doc.custom_engine_no || "",
+          location: doc.location || "",
           vehicleValue: doc.vehicle_value || "",
           employee: doc.employee || "",
           insuranceCompany: doc.insurance_company || "",
           policyNo: doc.policy_no || "",
           startDate: doc.start_date || "",
           endDate: doc.end_date || "",
-          fuelType: doc.fuel_type || "Petrol",
-          fuelUOM: doc.fuel_uom || "Litre",
+          fuelType: doc.fuel_type || "",
+          fuelUOM: doc.uom || doc.fuel_uom || "",
           carbonCheckDate: doc.carbon_check_date || "",
           vehicleOwner: doc.vehicle_owner || "",
           vehicleStatus: doc.vehicle_status || "",
@@ -195,14 +221,16 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
           acquisitionDate: "",
           warehouse: "",
           chassisNo: "",
+          custom_engine_no: "",
+          location: "",
           vehicleValue: "",
           employee: "",
           insuranceCompany: "",
           policyNo: "",
           startDate: "",
           endDate: "",
-          fuelType: "Petrol",
-          fuelUOM: "Litre",
+          fuelType: "",
+          fuelUOM: "",
           carbonCheckDate: "",
           vehicleOwner: "",
           vehicleStatus: "",
@@ -231,7 +259,19 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
   }
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData({ ...formData, [name]: value })
+    if (name === "fuelType") {
+      const matchKey = Object.keys(FUEL_TYPE_TO_UOM).find(
+        (key) => key.toLowerCase() === (value || "").toLowerCase()
+      );
+      const mappedUom = matchKey ? FUEL_TYPE_TO_UOM[matchKey] : "";
+      setFormData((prev) => ({
+        ...prev,
+        fuelType: value,
+        ...(mappedUom ? { fuelUOM: mappedUom } : {})
+      }));
+      return;
+    }
+    setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -315,6 +355,8 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
         acquisition_date: formData.acquisitionDate,
         warehouse: formData.warehouse,
         chassis_no: formData.chassisNo,
+        custom_engine_no: formData.custom_engine_no,
+        location: formData.location,
         vehicle_value: formData.vehicleValue,
         employee: formData.employee,
         insurance_company: formData.insuranceCompany,
@@ -323,6 +365,7 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
         end_date: formData.endDate,
         fuel_type: formData.fuelType,
         fuel_uom: formData.fuelUOM,
+        uom: formData.fuelUOM,
         carbon_check_date: formData.carbonCheckDate,
         vehicle_owner: formData.vehicleOwner,
         vehicle_status: formData.vehicleStatus,
@@ -393,6 +436,8 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
         acquisition_date: formData.acquisitionDate,
         warehouse: formData.warehouse,
         chassis_no: formData.chassisNo,
+        custom_engine_no: formData.custom_engine_no,
+        location: formData.location,
         vehicle_value: formData.vehicleValue,
         employee: formData.employee,
         insurance_company: formData.insuranceCompany,
@@ -401,6 +446,7 @@ export function VehicleMasterModal({ isOpen, onClose, record }: VehicleModalProp
         end_date: formData.endDate,
         fuel_type: formData.fuelType,
         fuel_uom: formData.fuelUOM,
+        uom: formData.fuelUOM,
         carbon_check_date: formData.carbonCheckDate,
         vehicle_owner: formData.vehicleOwner,
         vehicle_status: formData.vehicleStatus,

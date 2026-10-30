@@ -50,6 +50,7 @@ export interface VehicleRecord {
   vehicle_status?: string
   employee: string
   chassis_no: number
+  custom_engine_no?: string
   acquisition_date: string
   vehicle_value: number
   location: string
@@ -277,6 +278,7 @@ export default function VehicleMasterTable({ onAddVehicle, onSelectVehicle }: Ve
         "Vehicle Status": record.vehicle_status || "",
         "Employee": record.employee || "",
         "Chassis No": record.chassis_no || "",
+        "Engine No": record.custom_engine_no || "",
         "Acquisition Date": record.acquisition_date || "",
         "Vehicle Value": record.vehicle_value || 0,
         "Location": record.location || "",

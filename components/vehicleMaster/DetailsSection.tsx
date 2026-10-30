@@ -74,6 +74,27 @@ const VehicleDetailsSection: React.FC<VehicleDetailsSectionProps> = ({
           value={formData.chassisNo}
           onChange={handleInputChange}
           placeholder="Enter Chassis No"
+          disabled={isViewMode}
+        />
+      </InputGroup>
+
+      <InputGroup label="Engine No">
+        <Input
+          name="custom_engine_no"
+          value={formData.custom_engine_no || ""}
+          onChange={handleInputChange}
+          placeholder="Enter Engine No"
+          disabled={isViewMode}
+        />
+      </InputGroup>
+
+      <InputGroup label="Location">
+        <Input
+          name="location"
+          value={formData.location || ""}
+          onChange={handleInputChange}
+          placeholder="Enter Location"
+          disabled={isViewMode}
         />
       </InputGroup>
 
